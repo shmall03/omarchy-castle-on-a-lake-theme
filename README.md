@@ -1,7 +1,8 @@
 # Castle on a Lake — Omarchy (Quattro) Theme
 
 A warm, earthy dark theme for [Omarchy](https://omarchy.org/) 4 (Quattro),
-named after the two castle paintings it ships with. Terracotta accents,
+named after the four castle paintings it ships with (daytime and nighttime
+versions). Terracotta accents,
 cream text, and mossy greens rest on a near-black canvas for a quiet,
 old-stone kind of calm.
 
@@ -14,6 +15,16 @@ old-stone kind of calm.
 ![Castle in Front of a Mountain](./backgrounds/castle-afront-a-mountain.jpg)
 
 *Digital painting by **Raphael Lacoste** — [wallhaven.cc/w/jedy6p](https://wallhaven.cc/w/jedy6p)*
+
+### Night versions
+
+![Castle on a Lake at Night](./backgrounds/castle-on-a-lake-night.jpg)
+
+*Night version derived from the original with ImageMagick (dimmer, cooler, moonlit contrast).*
+
+![Castle in Front of a Mountain at Night](./backgrounds/castle-afront-a-mountain-night.jpg)
+
+*Night version derived from the original with ImageMagick (dimmer, cooler, moonlit contrast).*
 
 ## Color Palette
 
