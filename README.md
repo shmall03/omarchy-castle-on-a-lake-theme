@@ -1,5 +1,10 @@
 # Castle on a Lake — Omarchy (Quattro) Theme
 
+![For Omarchy](https://img.shields.io/badge/for-Omarchy%20Quattro-9b6b9f?style=for-the-badge)
+[![License: MIT](https://img.shields.io/github/license/shmall03/omarchy-castle-on-a-lake-theme?style=for-the-badge)](https://opensource.org/licenses/MIT)
+[![GitHub stars](https://img.shields.io/github/stars/shmall03/omarchy-castle-on-a-lake-theme?style=for-the-badge)](https://github.com/shmall03/omarchy-castle-on-a-lake-theme)
+[![GitHub last commit](https://img.shields.io/github/last-commit/shmall03/omarchy-castle-on-a-lake-theme?style=for-the-badge)](https://github.com/shmall03/omarchy-castle-on-a-lake-theme)
+
 A warm, earthy dark theme for [Omarchy](https://omarchy.org/) 4 (Quattro),
 named after the four castle paintings it ships with (daytime and nighttime
 versions). Terracotta accents,
