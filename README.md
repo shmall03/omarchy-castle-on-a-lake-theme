@@ -1,1 +1,1 @@
-# omarchy-castle-on-a-hill-theme
+# omarchy-castle-on-a-lake-theme
