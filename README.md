@@ -4,7 +4,8 @@ A warm, earthy dark theme for [Omarchy](https://omarchy.org/) 4 (Quattro),
 named after the four castle paintings it ships with (daytime and nighttime
 versions). Terracotta accents,
 cream text, and mossy greens rest on a near-black canvas for a quiet,
-old-stone kind of calm.
+old-stone kind of calm. The palette is blended between the daytime and
+nighttime wallpapers, so the colors sit naturally against both.
 
 ## Wallpapers
 
@@ -30,16 +31,16 @@ old-stone kind of calm.
 
 | Role | Swatch | Hex |
 |:---|:---|:---|
-| Background | ![](https://placehold.co/48x20/070804/070804) | `#070804` |
-| Dark background | ![](https://placehold.co/48x20/050603/050603) | `#050603` |
-| Lighter background | ![](https://placehold.co/48x20/20211d/20211d) | `#20211d` |
-| Foreground | ![](https://placehold.co/48x20/E1D2C8/E1D2C8) | `#E1D2C8` |
-| Accent | ![](https://placehold.co/48x20/ad6d60/ad6d60) | `#ad6d60` |
-| Muted | ![](https://placehold.co/48x20/5d5f58/5d5f58) | `#5d5f58` |
-| Yellow | ![](https://placehold.co/48x20/ffec9a/ffec9a) | `#ffec9a` |
-| Orange | ![](https://placehold.co/48x20/c39d7b/c39d7b) | `#c39d7b` |
-| Green | ![](https://placehold.co/48x20/d9c17b/d9c17b) | `#d9c17b` |
-| Red | ![](https://placehold.co/48x20/b88c64/b88c64) | `#b88c64` |
+| Background | ![](https://placehold.co/48x20/060606/060606) | `#060606` |
+| Dark background | ![](https://placehold.co/48x20/040404/040404) | `#040404` |
+| Lighter background | ![](https://placehold.co/48x20/1f1f1e/1f1f1e) | `#1f1f1e` |
+| Foreground | ![](https://placehold.co/48x20/f0d4e4/f0d4e4) | `#f0d4e4` |
+| Accent | ![](https://placehold.co/48x20/9b6b9f/9b6b9f) | `#9b6b9f` |
+| Muted | ![](https://placehold.co/48x20/626262/626262) | `#626262` |
+| Yellow | ![](https://placehold.co/48x20/eac283/eac283) | `#eac283` |
+| Orange | ![](https://placehold.co/48x20/c29176/c29176) | `#c29176` |
+| Green | ![](https://placehold.co/48x20/d0a46d/d0a46d) | `#d0a46d` |
+| Red | ![](https://placehold.co/48x20/b77e5f/b77e5f) | `#b77e5f` |
 
 ## Installation
 
