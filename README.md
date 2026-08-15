@@ -44,8 +44,37 @@ old-stone kind of calm.
 ## Installation
 
 ```bash
-omarchy-theme-install https://github.com/shmall03/omarchy-castle-on-a-lake-theme.git
+omarchy theme install https://github.com/shmall03/omarchy-castle-on-a-lake-theme.git
 ```
+
+## Day / Night Background Switching
+
+This theme ships day and night versions of each wallpaper, and a small helper
+can swap between them automatically: at sunset the background becomes the
+`-night` variant, and at sunrise it switches back. It looks up real
+sunrise/sunset times for your location every day — the location configured
+for the Omarchy weather panel, or detected from your IP when none is set.
+
+Install it (safe to re-run, nothing to configure):
+
+```bash
+bash ~/.config/omarchy/themes/castle-on-a-lake/daynight/install.sh
+```
+
+Remove it:
+
+```bash
+bash ~/.config/omarchy/themes/castle-on-a-lake/daynight/uninstall.sh
+```
+
+Notes:
+
+- The helper is theme-guarded, so it only changes the background while the
+  Castle On A Lake theme is active. A background picked manually via the
+  switcher is left untouched.
+- Requires network access for the daily sunrise/sunset lookup.
+- A `post-boot` hook starts the daemon at login; its log lives at
+  `~/.local/state/omarchy/bg-daynight-daemon.log`.
 
 ## Theme Files
 
@@ -53,6 +82,7 @@ omarchy-theme-install https://github.com/shmall03/omarchy-castle-on-a-lake-theme
 colors.toml     Color palette
 backgrounds/    Wallpapers
 icons.theme     Yaru-wartybrown icons
+daynight/       Day/night background switcher (see above)
 ```
 
 ## Acknowledgments

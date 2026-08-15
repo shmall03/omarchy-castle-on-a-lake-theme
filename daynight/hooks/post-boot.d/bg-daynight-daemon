@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Launch the background day/night daemon at boot, detached so it survives
+# this hook shell. The daemon reconciles the Castle On A Lake background to
+# the correct day/night variant and flips it at sunrise/sunset.
+
+setsid "$HOME/.config/omarchy/scripts/bg-daynight-daemon" </dev/null >>"$HOME/.local/state/omarchy/bg-daynight-daemon.log" 2>&1 &

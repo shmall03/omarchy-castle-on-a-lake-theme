@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# Swap between day and night Castle On A Lake backgrounds.
+#
+# Usage: bg-daynight <sunset|sunrise>
+#   sunset  -> switch from a day background to its -night variant
+#   sunrise -> switch from a night background back to its day variant
+#
+# No-op unless the active theme is castle-on-a-lake and the current
+# background is one of the known day/night pairs, so a background chosen
+# manually via the switcher is left untouched.
+
+MODE=${1:-}
+CURRENT_THEME=$(cat "$HOME/.local/state/omarchy/current/theme.name" 2>/dev/null)
+BACKGROUND_LINK="$HOME/.local/state/omarchy/current/background"
+
+[[ $CURRENT_THEME == "castle-on-a-lake" ]] || exit 0
+
+CURRENT_BG=$(basename "$(readlink -f "$BACKGROUND_LINK" 2>/dev/null)" 2>/dev/null)
+THEME_DIR=$(omarchy theme dir castle-on-a-lake 2>/dev/null)
+
+if [[ -z $THEME_DIR || ! -d $THEME_DIR/backgrounds ]]; then
+  echo "bg-daynight: theme background directory not found" >&2
+  exit 1
+fi
+
+BG_DIR="$THEME_DIR/backgrounds"
+
+TARGET=""
+case "$MODE:$CURRENT_BG" in
+  sunset:castle-on-a-lake.jpg)
+    TARGET="$BG_DIR/castle-on-a-lake-night.jpg"
+    ;;
+  sunset:castle-afront-a-mountain.jpg)
+    TARGET="$BG_DIR/castle-afront-a-mountain-night.jpg"
+    ;;
+  sunrise:castle-on-a-lake-night.jpg)
+    TARGET="$BG_DIR/castle-on-a-lake.jpg"
+    ;;
+  sunrise:castle-afront-a-mountain-night.jpg)
+    TARGET="$BG_DIR/castle-afront-a-mountain.jpg"
+    ;;
+esac
+
+if [[ -n $TARGET ]]; then
+  omarchy theme bg set "$TARGET"
+fi

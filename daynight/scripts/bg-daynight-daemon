@@ -1,0 +1,102 @@
+#!/bin/bash
+
+# Background day/night daemon for the Castle On A Lake theme.
+#
+# Fetches today's and tomorrow's sunrise/sunset for the user's location from
+# Open-Meteo, reconciles the background to the correct day/night variant
+# immediately, sleeps until the next event, flips the background, then
+# re-fetches for the next day. Single instance per session.
+#
+# The location comes from the Omarchy weather settings when present
+# (~/.local/state/omarchy/settings/weather.json); otherwise it is detected
+# from the IP address, the same way the Omarchy weather panel does.
+
+WEATHER_FILE="$HOME/.local/state/omarchy/settings/weather.json"
+SWAP_SCRIPT="$HOME/.config/omarchy/scripts/bg-daynight"
+LOCK_FILE="${XDG_RUNTIME_DIR:-/tmp}/bg-daynight-daemon.lock"
+
+exec 9>"$LOCK_FILE"
+flock -n 9 || exit 0
+
+log() {
+  printf '[%s] %s\n' "$(date '+%F %T')" "$*"
+}
+
+resolve_location() {
+  local coords city query result
+
+  coords=$(jq -r '"\(.latitude),\(.longitude)"' "$WEATHER_FILE" 2>/dev/null)
+  if [[ -z $coords || $coords == "null,null" ]]; then
+    city=$(curl -fsS --max-time 4 "https://wttr.in/?format=%l" 2>/dev/null)
+    [[ -n $city ]] || return 1
+    query=$(jq -rn --arg city "${city%%,*}" '$city | @uri')
+    result=$(curl -fsS --max-time 5 \
+      "https://geocoding-api.open-meteo.com/v1/search?name=${query}&count=1" 2>/dev/null)
+    coords=$(jq -r '"\(.results[0].latitude),\(.results[0].longitude)"' <<<"$result" 2>/dev/null)
+  fi
+
+  [[ -z $coords || $coords == "null,null" ]] && return 1
+  LAT=${coords%%,*}
+  LON=${coords#*,}
+}
+
+fetch_sun_times() {
+  local data
+
+  resolve_location || return 1
+
+  data=$(curl -fsS --max-time 6 \
+    "https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&daily=sunrise,sunset&timezone=auto&forecast_days=2" 2>/dev/null) || return 1
+
+  SUNRISE_TODAY=$(date -d "$(jq -r '.daily.sunrise[0]' <<<"$data")" +%s 2>/dev/null)
+  SUNSET_TODAY=$(date -d "$(jq -r '.daily.sunset[0]' <<<"$data")" +%s 2>/dev/null)
+  SUNRISE_TOMORROW=$(date -d "$(jq -r '.daily.sunrise[1]' <<<"$data")" +%s 2>/dev/null)
+
+  if [[ ! $SUNRISE_TODAY =~ ^[0-9]+$ || ! $SUNSET_TODAY =~ ^[0-9]+$ || ! $SUNRISE_TOMORROW =~ ^[0-9]+$ ]]; then
+    return 1
+  fi
+}
+
+sleep_until() {
+  local duration=$(( $1 - $(date +%s) ))
+  if (( duration > 0 )); then
+    sleep "$duration"
+  fi
+}
+
+wait_for_sunrise() {
+  "$SWAP_SCRIPT" sunset
+  log "Nighttime (sunrise next at $(date -d "@$1" '+%F %T')); night background ensured"
+  sleep_until "$1"
+  "$SWAP_SCRIPT" sunrise
+}
+
+wait_for_sunset() {
+  "$SWAP_SCRIPT" sunrise
+  log "Daytime (sunset next at $(date -d "@$1" '+%F %T')); day background ensured"
+  sleep_until "$1"
+  "$SWAP_SCRIPT" sunset
+}
+
+log "bg-daynight daemon started"
+
+while true; do
+  if ! fetch_sun_times; then
+    log "Could not fetch sunrise/sunset; retrying in 5 minutes"
+    sleep 300
+    continue
+  fi
+
+  log "Sunrise today $(date -d "@$SUNRISE_TODAY" '+%F %T'), sunset today $(date -d "@$SUNSET_TODAY" '+%F %T'), sunrise tomorrow $(date -d "@$SUNRISE_TOMORROW" '+%F %T')"
+  now=$(date +%s)
+
+  if (( now < SUNSET_TODAY )); then
+    if (( now < SUNRISE_TODAY )); then
+      wait_for_sunrise "$SUNRISE_TODAY"
+    else
+      wait_for_sunset "$SUNSET_TODAY"
+    fi
+  else
+    wait_for_sunrise "$SUNRISE_TOMORROW"
+  fi
+done
